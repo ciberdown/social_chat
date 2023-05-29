@@ -74,3 +74,4 @@ export const darkTheme = createTheme({
 
 export const lightColor: string = theme.palette.primary.main;
 export const darkColor: string = theme.palette.secondary.main;
+export const lightBgColor:string = "#e0f7fa"

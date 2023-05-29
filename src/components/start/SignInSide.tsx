@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Mode from "../mode/mode";
 import { Link as MyLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { lightColor } from "../../styles/theme";
+import { lightColor, lightBgColor } from "../../styles/theme";
 import { Theme } from "@mui/material";
 
 function Copyright(props: any) {
@@ -57,6 +57,7 @@ export default function SignInSide() {
       flexDirection: "column",
       alignItems: "center",
     },
+    textField:{bgcolor:`${mode}` === 'dark'?'none':lightBgColor}
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -71,7 +72,16 @@ export default function SignInSide() {
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} sx={styles.grid} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid
+        item
+        xs={12}
+        sm={8}
+        md={5}
+        sx={{ backgroundColor: mode === "dark" ? "black" :  'white'}}
+        component={Paper}
+        elevation={6}
+        square
+      >
         <Box sx={styles.freeBox}>
           <Box sx={{ alignSelf: "end", mb: 8 }}>
             <Mode />
@@ -98,6 +108,7 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
+              sx={styles.textField}
             />
 
             <TextField
@@ -108,7 +119,7 @@ export default function SignInSide() {
               label="password"
               id="password"
               autoComplete="current-password"
-              color="primary"
+              sx={styles.textField}
             />
 
             <FormControlLabel

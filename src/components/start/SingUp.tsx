@@ -12,7 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link as MyLink } from "react-router-dom";
-import { darkColor, lightColor } from "../../styles/theme";
+import { lightColor,lightBgColor } from "../../styles/theme";
+import Mode from "../mode/mode";
 import { useSelector } from "react-redux";
 function Copyright(props: any) {
   return (
@@ -33,15 +34,21 @@ function Copyright(props: any) {
 }
 
 export default function SignUp() {
+  const mode: string = useSelector((state: any) => state.Mode.mode);
   const styles = {
     freeBox: {
-      marginTop: 8,
+      marginTop: 5,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
     },
+    avatar: { m: 1, bgcolor: "primary.main" },
+    myLink: {
+      color: `${mode}` === "dark" ? "white" : `${lightColor}`,
+      textDecoration: "none"
+    },
+    textField:{bgcolor:`${mode}` === 'dark'?'none':lightBgColor}
   };
-  const mode: string = useSelector((state: any) => state.Mode.mode);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -54,8 +61,13 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Box sx={{
+        ml:44
+      }}>
+        <Mode />
+      </Box>
       <Box sx={styles.freeBox}>
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+        <Avatar sx={styles.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -72,6 +84,7 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                sx={styles.textField}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -82,6 +95,7 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="family-name"
+                sx={styles.textField}
               />
             </Grid>
             <Grid item xs={12}>
@@ -92,6 +106,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                sx={styles.textField}
               />
             </Grid>
             <Grid item xs={12}>
@@ -103,6 +118,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                sx={styles.textField}
               />
             </Grid>
             <Grid item xs={12}>
@@ -116,20 +132,14 @@ export default function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, fontSize:'1rem',fontWeight:'bold' }}
+            sx={{ mt: 3, mb: 2, fontSize: "1rem", fontWeight: "bold" }}
             color="primary"
           >
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <MyLink
-                style={{
-                  color: mode === "dark" ? "white" : lightColor,
-                  textDecoration: "none",
-                }}
-                to="/"
-              >
+              <MyLink style={styles.myLink} to="/">
                 Already have an account? Sign in
               </MyLink>
             </Grid>
