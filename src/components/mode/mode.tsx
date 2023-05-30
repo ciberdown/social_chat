@@ -1,7 +1,8 @@
 import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
-import LightModeIcon from '@mui/icons-material/LightMode';import Brightness7Icon from "@mui/icons-material/Brightness7";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import NightsStayIcon from "@mui/icons-material/NightsStay";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";

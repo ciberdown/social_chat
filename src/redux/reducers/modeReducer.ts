@@ -1,4 +1,4 @@
-const initial_value: string = 'dark';
+const initial_value: string = 'light';
 
 const ModeReducer = (state = { mode: initial_value }, action: any) => {
   switch (action.type) {
