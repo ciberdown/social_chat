@@ -2,16 +2,19 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "../components/start/SingUp";
 import SignInSide from "../components/start/SignInSide";
-import { ThemeProvider } from "@mui/material/styles";
-import { theme, darkTheme } from "../styles/theme";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import MainChatRoom from "../components/chatRoom/mainChatRoom";
-function App() {
+
+import "@fontsource/open-sans";
+import "@fontsource/open-sans/400.css"; // Specify weight
+import "@fontsource/open-sans/400-italic.css"; // Specify weight and style
+import { getTheme } from "../styles/theme";
+
+export default function App() {
   const mode: "light" | "dark" = useSelector((state: any) => state.Mode.mode);
-  const myTheme = mode === "dark" ? darkTheme : theme;
-  // theme.palette.mode = mode
+
   return (
-    <ThemeProvider theme={myTheme}>
+    <ThemeProvider theme={getTheme(mode)}>
       <div className="App">
         {/* <MainChatRoom /> */}
         <Routes>
@@ -23,4 +26,3 @@ function App() {
   );
 }
 
-export default App;

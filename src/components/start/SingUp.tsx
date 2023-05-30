@@ -12,9 +12,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link as MyLink } from "react-router-dom";
-import { lightColor,lightBgColor } from "../../styles/theme";
 import Mode from "../mode/mode";
 import { useSelector } from "react-redux";
+import { getStyles } from "../../styles/theme";
 function Copyright(props: any) {
   return (
     <Typography
@@ -25,7 +25,7 @@ function Copyright(props: any) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        MUI
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -34,21 +34,8 @@ function Copyright(props: any) {
 }
 
 export default function SignUp() {
-  const mode: string = useSelector((state: any) => state.Mode.mode);
-  const styles = {
-    freeBox: {
-      marginTop: 5,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    },
-    avatar: { m: 1, bgcolor: "primary.main" },
-    myLink: {
-      color: `${mode}` === "dark" ? "white" : `${lightColor}`,
-      textDecoration: "none"
-    },
-    textField:{bgcolor:`${mode}` === 'dark'?'none':lightBgColor}
-  };
+  const mode: "light" | "dark" = useSelector((state: any) => state.Mode.mode);
+  const styles = getStyles(mode);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -61,16 +48,23 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Box sx={{
-        ml:44
-      }}>
+      <Box
+        sx={{
+          ml: 44,
+        }}
+      >
         <Mode />
       </Box>
-      <Box sx={styles.freeBox}>
+      <Box sx={styles.freeBoxSignUp}>
         <Avatar sx={styles.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography
+          component="h1"
+          fontWeight="bold"
+          variant="h5"
+          color={mode === "dark" ? "secondary.main" : "primary.main"}
+        >
           Sign up
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -84,6 +78,7 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                color={mode === "dark" ? "secondary" : "primary"}
                 sx={styles.textField}
               />
             </Grid>
@@ -95,6 +90,7 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="family-name"
+                color={mode === "dark" ? "secondary" : "primary"}
                 sx={styles.textField}
               />
             </Grid>
@@ -106,6 +102,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                color={mode === "dark" ? "secondary" : "primary"}
                 sx={styles.textField}
               />
             </Grid>
@@ -118,6 +115,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                color={mode === "dark" ? "secondary" : "primary"}
                 sx={styles.textField}
               />
             </Grid>
@@ -132,14 +130,21 @@ export default function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, fontSize: "1rem", fontWeight: "bold" }}
+            sx={{
+              mt: 3,
+              mb: 2,
+              fontSize: "1rem",
+              fontWeight: "bold",
+              bgcolor: `${mode}` === "dark" ? "secondary.main" : "primary.main",
+              color: `${mode}` === "dark" ? "black" : "white",
+            }}
             color="primary"
           >
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <MyLink style={styles.myLink} to="/">
+              <MyLink style={styles.mylink} to="/">
                 Already have an account? Sign in
               </MyLink>
             </Grid>

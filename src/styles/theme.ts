@@ -3,11 +3,15 @@ import { blue, orange, grey } from "@mui/material/colors";
 import "@fontsource/open-sans";
 import "@fontsource/open-sans/400.css"; // Specify weight
 import "@fontsource/open-sans/400-italic.css"; // Specify weight and style
-
+import { Theme } from "@mui/material";
 declare module "@mui/material/styles" {
   interface Theme {
     colors: {
       first: {
+        main: string;
+        dark: string;
+      };
+      textField: {
         main: string;
         dark: string;
       };
@@ -20,58 +24,88 @@ declare module "@mui/material/styles" {
         main: string;
         dark: string;
       };
+      textField: {
+        main: string;
+        dark: string;
+      };
     };
   }
 }
 
-export const theme = createTheme({
-  colors: {
-    first: {
-      main: "",
-      dark: "",
+export const getTheme = (mode: "light" | "dark") => {
+  return createTheme({
+    colors: {
+      first: {
+        main: "",
+        dark: "",
+      },
+      textField: {
+        main: "#e0f7fa",
+        dark: "black",
+      },
     },
-  },
-  direction: "rtl",
-  palette: {
-    primary: {
-      main: blue[600],
-      dark: blue[900],
+    palette: {
+      mode: mode,
+      primary: {
+        main: blue[600],
+      },
+      secondary: {
+        main: orange[500],
+      },
     },
-    secondary: {
-      main: orange[400],
+    typography: {
+      fontFamily: "Open Sans",
     },
-    info: {
-      main: "#FFFFFF",
-    },
-  },
-  typography: {
-    fontFamily: "Open Sans",
-  },
-});
+  });
+};
 
-export const darkTheme = createTheme({
-  colors: {
-    first: {
-      main: "#ff9100",
-      dark: "#ff9100",
+export const getStyles = (mode: "light" | "dark") => {
+  return {
+    mylink: {
+      color: `${mode}` === "dark" ? "white" : "black",
+      textDecoration: "none",
     },
-  },
-  palette: {
-    mode: "dark",
-    primary: {
-      main: orange[500],
-      dark: "#ff9100",
+    freeBoxSignIn: {
+      m: 4,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
     },
-    secondary: {
-      main: orange[300],
-      dark: "#ffea00",
+    freeBoxSignUp: {
+      
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
     },
-  },
-  typography: {
-    fontFamily: "Open Sans",
-  },
-});
-
-export const lightColor: string = theme.palette.primary.main;
-export const darkColor: string = theme.palette.secondary.main;
-export const lightBgColor:string = "#e0f7fa"
+    avatar: {
+      mt: 6,
+      bgcolor: mode === "dark" ? "secondary.main" : "primary.main",
+    },
+    submit: {
+      mt: 3,
+      mb: 2,
+      fontWeight: "bolder",
+      fontSize: "1rem",
+      bgcolor: `${mode}` === "dark" ? "secondary.main" : "primary.main",
+      color: `${mode}` === "dark" ? "black" : "white",
+    },
+    grid: {
+      backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
+      backgroundRepeat: "no-repeat",
+      backgroundColor: (t: Theme) =>
+        t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    },
+    myLink: {
+      color: `${mode}` === "dark" ? "white" : getTheme(mode).colors.textField.main,
+      textDecoration: "none",
+    },
+    textField: {
+      bgcolor:
+        `${mode}` === "dark"
+          ? getTheme(mode).colors.textField.dark
+          : getTheme(mode).colors.textField.main,
+    },
+  };
+};

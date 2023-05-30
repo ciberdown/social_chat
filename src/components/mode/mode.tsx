@@ -23,14 +23,14 @@ export default function Mode() {
           justifyContent: "center",
           color: "text.primary",
           borderRadius: 1,
-          py: 1,
+          
           cursor: "pointer",
         }}
         onClick={toggleMode}
       >
         <IconButton sx={{ ml: 1 }} color="inherit">
           {mode === "dark" ? (
-            <LightModeIcon color="primary" fontSize="large" />
+            <LightModeIcon sx={{color:'secondary.main'}} fontSize="large" />
           ) : (
             <NightsStayIcon color="primary" fontSize="large" />
           )}
