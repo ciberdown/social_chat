@@ -6,8 +6,10 @@ import {
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import ModeReducer from "./reducers/modeReducer";
+import UserReducer from "./reducers/userReducer";
 const reducer = combineReducers({
   Mode: ModeReducer,
+  Users: UserReducer
 });
 
 const initialState = {};

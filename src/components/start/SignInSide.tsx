@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { getStyles } from "../../styles/theme";
 import Link from "@mui/material/Link";
 import { useState } from "react";
-import { logInWithEmailAndPassword } from "./firebaseSignIn";
+import { logInWithEmailAndPassword } from "../../app/firebase/firebaseSignIn";
 function Copyright(props: any) {
   return (
     <Typography

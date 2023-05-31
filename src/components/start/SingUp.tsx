@@ -15,7 +15,7 @@ import { Link as MyLink } from "react-router-dom";
 import Mode from "../mode/mode";
 import { useSelector } from "react-redux";
 import { getStyles } from "../../styles/theme";
-import { registerWithEmailAndPassword } from "./firebaseSignUp";
+import { registerWithEmailAndPassword } from "../../app/firebase/firebaseSignUp";
 function Copyright(props: any) {
   return (
     <Typography
