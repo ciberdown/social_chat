@@ -30,7 +30,7 @@ function renderRow(props: ListChildComponentProps) {
 
   return (
     <Typography component="li" {...dataSet[0]} noWrap style={inlineStyle}>
-      {`#${dataSet[2] + 1} - ${dataSet[1]}`}
+      {dataSet[1]}
     </Typography>
   );
 }
@@ -140,7 +140,6 @@ export default function AutocComplete() {
     users.length === 0 && getDocData("users", dispatch);//get data just once
   }, []);
   const users = useSelector((state: any)=>state.Users.users);
-  console.log(users.length)
   return (
     <Autocomplete
       id="virtualize-demo"

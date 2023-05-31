@@ -20,7 +20,7 @@ export default function App() {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/auth.user
-      console.log("user signed in", user);
+      console.log("user signed in");
       const uid = user.uid;
       setUserSignedIn(true);
     } else {
