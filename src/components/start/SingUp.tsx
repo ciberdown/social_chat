@@ -15,6 +15,7 @@ import { Link as MyLink } from "react-router-dom";
 import Mode from "../mode/mode";
 import { useSelector } from "react-redux";
 import { getStyles } from "../../styles/theme";
+import { registerWithEmailAndPassword } from "./firebaseSignUp";
 function Copyright(props: any) {
   return (
     <Typography
@@ -39,10 +40,11 @@ export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const name: string =
+      (data.get("firstName") as string) + " " + data.get("lastName");
+    const email: string = data.get("email") as string;
+    const pass: string = data.get("password") as string;
+    registerWithEmailAndPassword(name, email, pass);
   };
 
   return (

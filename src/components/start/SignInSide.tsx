@@ -15,7 +15,8 @@ import { Link as MyLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getStyles } from "../../styles/theme";
 import Link from "@mui/material/Link";
-
+import { useState } from "react";
+import { logInWithEmailAndPassword } from "./firebaseSignIn";
 function Copyright(props: any) {
   return (
     <Typography
@@ -35,15 +36,19 @@ function Copyright(props: any) {
 }
 
 export default function SignInSide() {
+  // const [authData, setAuthData] = useState<{ email: string; pass: string }>();
+  const [userNotFound, setUserNotFound] = useState<string>("");
   const mode = useSelector((state: any) => state.Mode.mode);
+
   const styles = getStyles(mode);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    logInWithEmailAndPassword(
+      data.get("email") as string,
+      data.get("password") as string,
+      setUserNotFound
+    );
   };
 
   return (
@@ -136,6 +141,9 @@ export default function SignInSide() {
                 </MyLink>
               </Grid>
             </Grid>
+            <Typography align="center" sx={{ color: "red" }} mt={3}>
+              {userNotFound}
+            </Typography>
             <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>

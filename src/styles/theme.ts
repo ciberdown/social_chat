@@ -1,9 +1,9 @@
-import { createTheme } from "@mui/material/styles";
-import { blue, orange, grey } from "@mui/material/colors";
+import { red, blue, orange, grey } from "@mui/material/colors";
 import "@fontsource/open-sans";
 import "@fontsource/open-sans/400.css"; // Specify weight
 import "@fontsource/open-sans/400-italic.css"; // Specify weight and style
 import { Theme } from "@mui/material";
+import { createTheme } from "@mui/material";
 declare module "@mui/material/styles" {
   interface Theme {
     colors: {
@@ -72,7 +72,6 @@ export const getStyles = (mode: "light" | "dark") => {
       alignItems: "center",
     },
     freeBoxSignUp: {
-      
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -88,6 +87,9 @@ export const getStyles = (mode: "light" | "dark") => {
       fontSize: "1rem",
       bgcolor: `${mode}` === "dark" ? "secondary.main" : "primary.main",
       color: `${mode}` === "dark" ? "black" : "white",
+      "&:hover": {
+        bgcolor: mode === "dark" ? orange[600] : blue[700],
+      },
     },
     grid: {
       backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
@@ -98,7 +100,8 @@ export const getStyles = (mode: "light" | "dark") => {
       backgroundPosition: "center",
     },
     myLink: {
-      color: `${mode}` === "dark" ? "white" : getTheme(mode).colors.textField.main,
+      color:
+        `${mode}` === "dark" ? "white" : getTheme(mode).colors.textField.main,
       textDecoration: "none",
     },
     textField: {
