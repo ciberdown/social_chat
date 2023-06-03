@@ -1,4 +1,4 @@
-import { Item } from "./mainChatRoom";
+import { Item } from "../mainChatRoom";
 import { Fab, Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SelfInfo from "./SelfInfo";
@@ -19,7 +19,17 @@ export default function ListBox(props: {
         <AutocComplete />
         <ChatPeopleList />
 
-        <Fab size="medium" sx={{bgcolor:'#f50057', color:'white', position:'absolute',bottom:'8vh', left:16}} aria-label="add">
+        <Fab
+          size="medium"
+          sx={{
+            bgcolor: "#f50057",
+            color: "white",
+            position: "absolute",
+            bottom: "8vh",
+            left: 16,
+          }}
+          aria-label="add"
+        >
           <AddIcon />
         </Fab>
       </Item>

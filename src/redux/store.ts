@@ -9,7 +9,7 @@ import ModeReducer from "./reducers/modeReducer";
 import UserReducer from "./reducers/userReducer";
 const reducer = combineReducers({
   Mode: ModeReducer,
-  Users: UserReducer
+  Users: UserReducer,
 });
 
 const initialState = {};

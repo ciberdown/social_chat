@@ -9,7 +9,7 @@ export const getDocData = async (collectionName: string, dispatch: any) => {
       array.push({ data: doc.data(), id: doc.id });
       dispatch(UserActions(doc.data().name))
     });
-    console.log(array);
+    //console.log(array);
     return array;
   } catch (err) {
     console.error(err);

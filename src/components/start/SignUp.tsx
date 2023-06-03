@@ -11,11 +11,11 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Link as MyLink } from "react-router-dom";
+import { Link as MyLink, useNavigate } from "react-router-dom";
 import Mode from "../mode/mode";
 import { useSelector } from "react-redux";
 import { getStyles } from "../../styles/theme";
-import { registerWithEmailAndPassword } from "../../app/firebase/firebaseSignUp";
+import { registerWithEmailAndPassword } from "./firebaseSignUp";
 function Copyright(props: any) {
   return (
     <Typography
@@ -35,6 +35,7 @@ function Copyright(props: any) {
 }
 
 export default function SignUp() {
+  const navigate = useNavigate()
   const mode: "light" | "dark" = useSelector((state: any) => state.Mode.mode);
   const styles = getStyles(mode);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +45,7 @@ export default function SignUp() {
       (data.get("firstName") as string) + " " + data.get("lastName");
     const email: string = data.get("email") as string;
     const pass: string = data.get("password") as string;
-    registerWithEmailAndPassword(name, email, pass);
+    registerWithEmailAndPassword(name, email, pass, navigate);
   };
 
   return (

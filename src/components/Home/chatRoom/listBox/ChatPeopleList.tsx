@@ -18,7 +18,7 @@ export default function ChatPeopleList() {
       {chatList.map((item, index) => {
         return (
           <>
-            <ListItem>
+            <ListItem key={index}>
               <ListItemAvatar>
                 <Avatar>
                   <ImageIcon />

@@ -2,8 +2,8 @@ import { Grid } from "@mui/material";
 import { Component, ReactNode } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import ListBox from "./ListBox";
-import ChatRoomBox from "./ChatRoomBox";
+import ListBox from "./listBox/ListBox";
+import ChatRoomBox from "./chatroomBox/ChatRoomBox";
 
 export default class MainChatRoom extends Component {
   render(): ReactNode {

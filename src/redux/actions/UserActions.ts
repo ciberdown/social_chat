@@ -3,7 +3,7 @@ export const UserActions = (newUser:string) => (dispatch: any, getState: any) =>
     const { Users: thisState } = getState();
 
     dispatch({
-      type: "ADD_USER",
+      type: "TRUE",
       payload: [newUser, ...thisState.users],
     });
 };

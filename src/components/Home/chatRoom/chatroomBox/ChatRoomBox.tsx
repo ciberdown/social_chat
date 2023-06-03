@@ -1,4 +1,4 @@
-import { Item } from "./mainChatRoom";
+import { Item } from "../mainChatRoom";
 import { Grid } from "@mui/material";
 export default function ChatRoomBox(props: {
   md?: number;

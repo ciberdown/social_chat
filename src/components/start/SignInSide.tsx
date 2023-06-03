@@ -11,12 +11,12 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Mode from "../mode/mode";
-import { Link as MyLink } from "react-router-dom";
+import { Link as MyLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getStyles } from "../../styles/theme";
 import Link from "@mui/material/Link";
 import { useState } from "react";
-import { logInWithEmailAndPassword } from "../../app/firebase/firebaseSignIn";
+import { logInWithEmailAndPassword } from "./firebaseSignIn";
 function Copyright(props: any) {
   return (
     <Typography
@@ -36,18 +36,29 @@ function Copyright(props: any) {
 }
 
 export default function SignInSide() {
-  // const [authData, setAuthData] = useState<{ email: string; pass: string }>();
+  const [rememberVal, setRememberVal] = useState<boolean>(false);
   const [userNotFound, setUserNotFound] = useState<string>("");
+  const [remmebered_email, set_remmebered_email] = useState<string | null>(
+    localStorage.getItem("userInfo_user")
+  );
+  const [remmebered_pass, set_remmebered_pass] = useState<string | null>(
+    localStorage.getItem("userInfo_pass")
+  );
   const mode = useSelector((state: any) => state.Mode.mode);
-
+  const navigate = useNavigate();
   const styles = getStyles(mode);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    if (rememberVal) {
+      localStorage.setItem("userInfo_user", data.get("email") as string);
+      localStorage.setItem("userInfo_pass", data.get("password") as string);
+    }
     logInWithEmailAndPassword(
       data.get("email") as string,
       data.get("password") as string,
-      setUserNotFound
+      setUserNotFound,
+      navigate
     );
   };
 
@@ -103,6 +114,7 @@ export default function SignInSide() {
               autoFocus
               color={mode === "dark" ? "secondary" : "primary"}
               sx={styles.textField}
+              defaultValue={remmebered_email}
             />
 
             <TextField
@@ -115,10 +127,18 @@ export default function SignInSide() {
               autoComplete="current-password"
               color={mode === "dark" ? "secondary" : "primary"}
               sx={styles.textField}
+              defaultValue={remmebered_pass}
             />
 
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={
+                <Checkbox
+                  onClick={() => setRememberVal(true)}
+                  checked={rememberVal}
+                  value="remember"
+                  color="primary"
+                />
+              }
               label="Remember me"
             />
             <Button

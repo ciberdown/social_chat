@@ -7,7 +7,7 @@ import Popper from "@mui/material/Popper";
 import { useTheme, styled } from "@mui/material/styles";
 import { VariableSizeList, ListChildComponentProps } from "react-window";
 import Typography from "@mui/material/Typography";
-import { getDocData } from "../../../app/firebase/getDocData";
+import { getDocData } from "../../../../app/firebase/getDocData";
 import { useDispatch, useSelector } from "react-redux";
 const LISTBOX_PADDING = 8; // px
 
@@ -111,18 +111,6 @@ const ListboxComponent = React.forwardRef<
   );
 });
 
-function random(length: number) {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-
-  for (let i = 0; i < length; i += 1) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-
-  return result;
-}
-
 const StyledPopper = styled(Popper)({
   [`& .${autocompleteClasses.listbox}`]: {
     boxSizing: "border-box",
@@ -133,17 +121,17 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-
 export default function AutocComplete() {
   const dispatch = useDispatch();
   React.useEffect(() => {
-    users.length === 0 && getDocData("users", dispatch);//get data just once
+    users.length === 0 && getDocData("users", dispatch); //get data just once
   }, []);
-  const users = useSelector((state: any)=>state.Users.users);
+  const users = useSelector((state: any) => state.Users.users);
+  console.log(users);
   return (
     <Autocomplete
       id="virtualize-demo"
-      sx={{ width: 300,bgcolor:'white' }}
+      sx={{ width: 300, bgcolor: "white" }}
       disableListWrap
       PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
