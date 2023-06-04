@@ -1,10 +1,11 @@
 import { Item } from "../mainChatRoom";
-import { Fab, Grid } from "@mui/material";
+import { Container, CssBaseline, Fab, Grid, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SelfInfo from "./SelfInfo";
 import ChatPeopleList from "./ChatPeopleList";
-import AutocComplete from "./autoComplete";
-
+import { getTheme } from "../../../../styles/theme";
+import { useSelector } from "react-redux";
+import SearchBox from "./SearchBox";
 export default function ListBox(props: {
   md?: number;
   xs?: number;
@@ -12,11 +13,25 @@ export default function ListBox(props: {
   sm?: number;
   sx?: object;
 }) {
+  const mode = useSelector((state: any) => state.Mode.mode);
   return (
     <Grid item md={props.md} xs={props.xs}>
-      <Item sx={props.sx}>
+      <Item
+        sx={{
+          ...props.sx,
+          bgcolor:
+            mode === "dark"
+              ? getTheme(mode).colors.textField.dark
+              : getTheme(mode).colors.textField.main,
+        }}
+      >
+        <CssBaseline />
         <SelfInfo />
-        <AutocComplete />
+        <SearchBox
+          sx={{ my: 1, bgcolor: mode === "dark" ? "black" : "white" }}
+          mode={mode}
+        />
+
         <ChatPeopleList />
 
         <Fab
@@ -25,7 +40,7 @@ export default function ListBox(props: {
             bgcolor: "#f50057",
             color: "white",
             position: "absolute",
-            bottom: "8vh",
+            bottom: "11vh",
             left: 16,
           }}
           aria-label="add"

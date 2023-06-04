@@ -127,7 +127,7 @@ export default function AutocComplete() {
     users.length === 0 && getDocData("users", dispatch); //get data just once
   }, []);
   const users = useSelector((state: any) => state.Users.users);
-  console.log(users);
+  // console.log(users);
   return (
     <Autocomplete
       id="virtualize-demo"

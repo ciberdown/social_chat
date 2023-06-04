@@ -7,11 +7,26 @@ import NightsStayIcon from "@mui/icons-material/NightsStay";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { ChangeModeAction } from "../../redux/actions/ModeActions";
-export default function Mode() {
-  const mode: string = useSelector((state: any) => state.Mode.mode);
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+
+
+export default function Mode({ icons = 'icon_one' }: { icons?: "icon_one" | "icon_two" }) {
+  const mode: 'light'|'dark' = useSelector((state: any) => state.Mode.mode);
   const dispatch = useDispatch();
   const toggleMode = (): void => {
     dispatch(ChangeModeAction());
+  };
+  const DarkIcon = () => {
+    if (icons === "icon_one")
+      return (
+        <LightModeIcon sx={{ color: "secondary.main" }} fontSize="large" />
+      );
+    else return <Brightness7Icon sx={{color:'secondary.main'}}/>;
+  };
+  const LightIcon = () => {
+    if (icons === "icon_one")
+      return <NightsStayIcon color="primary" fontSize="large" />;
+    else return <Brightness4Icon />;
   };
   return (
     <>
@@ -23,17 +38,12 @@ export default function Mode() {
           justifyContent: "center",
           color: "text.primary",
           borderRadius: 1,
-          
           cursor: "pointer",
         }}
         onClick={toggleMode}
       >
         <IconButton sx={{ ml: 1 }} color="inherit">
-          {mode === "dark" ? (
-            <LightModeIcon sx={{color:'secondary.main'}} fontSize="large" />
-          ) : (
-            <NightsStayIcon color="primary" fontSize="large" />
-          )}
+          {mode === "dark" ? <DarkIcon /> : <LightIcon />}
         </IconButton>
       </Box>
     </>
