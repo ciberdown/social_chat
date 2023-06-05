@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { ChangeModeAction } from "../../redux/actions/ModeActions";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
+import { Tooltip } from "@mui/material";
 
 
 export default function Mode({ icons = 'icon_one' }: { icons?: "icon_one" | "icon_two" }) {
@@ -29,7 +30,7 @@ export default function Mode({ icons = 'icon_one' }: { icons?: "icon_one" | "ico
     else return <Brightness4Icon />;
   };
   return (
-    <>
+    <Tooltip title='Change mode'>
       <Box
         sx={{
           display: "flex",
@@ -46,6 +47,6 @@ export default function Mode({ icons = 'icon_one' }: { icons?: "icon_one" | "ico
           {mode === "dark" ? <DarkIcon /> : <LightIcon />}
         </IconButton>
       </Box>
-    </>
+    </Tooltip>
   );
 }

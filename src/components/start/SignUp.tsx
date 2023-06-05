@@ -16,6 +16,13 @@ import Mode from "../mode/mode";
 import { useSelector } from "react-redux";
 import { getStyles } from "../../styles/theme";
 import { registerWithEmailAndPassword } from "./firebaseSignUp";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 function Copyright(props: any) {
   return (
     <Typography
@@ -35,7 +42,7 @@ function Copyright(props: any) {
 }
 
 export default function SignUp() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const mode: "light" | "dark" = useSelector((state: any) => state.Mode.mode);
   const styles = getStyles(mode);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -47,7 +54,67 @@ export default function SignUp() {
     const pass: string = data.get("password") as string;
     registerWithEmailAndPassword(name, email, pass, navigate);
   };
+  const handleAddProfileImage = (event: any) => {
+    console.log(event.target.files[0]);
+    // setSelectedImage(event.target.files[0]);\
+    addFileToFirebase(event.target.files[0]);
+  };
+  const addFileToFirebase = (file: any) => {
+    const storage = getStorage();
 
+    // Create the file metadata
+    /** @type {any} */
+    const metadata = {
+      contentType: "image/jpeg",
+    };
+
+    // Upload file and metadata to the object 'images/mountains.jpg'
+    const storageRef = ref(storage, "images/" + file.name);
+    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+        }
+      },
+      (error) => {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case "storage/unauthorized":
+            // User doesn't have permission to access the object
+            break;
+          case "storage/canceled":
+            // User canceled the upload
+            break;
+
+          // ...
+
+          case "storage/unknown":
+            // Unknown error occurred, inspect error.serverResponse
+            break;
+        }
+      },
+      () => {
+        // Upload completed successfully, now we can get the download URL
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+        });
+      }
+    );
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -121,6 +188,26 @@ export default function SignUp() {
                 color={mode === "dark" ? "secondary" : "primary"}
                 sx={styles.textField}
               />
+            </Grid>
+            <Grid>
+              <Button
+                disableRipple
+                sx={{
+                  m: 2,
+                  bgcolor: mode === "dark" ? "secondary.main" : "primary.main",
+                  color: mode === "dark" ? "black" : "white",
+                }}
+                onChange={handleAddProfileImage}
+                variant="contained"
+                component="label"
+              >
+                <input type="file" hidden onChange={handleAddProfileImage} />
+                <Typography>Add profile image</Typography>
+                <AddPhotoAlternateIcon
+                  sx={{ color: mode === "dark" ? "black" : "white", ml: 2 }}
+                  fontSize="large"
+                />
+              </Button>
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel

@@ -6,6 +6,7 @@ import ChatPeopleList from "./ChatPeopleList";
 import { getTheme } from "../../../../styles/theme";
 import { useSelector } from "react-redux";
 import SearchBox from "./SearchBox";
+
 export default function ListBox(props: {
   md?: number;
   xs?: number;
@@ -14,6 +15,9 @@ export default function ListBox(props: {
   sx?: object;
 }) {
   const mode = useSelector((state: any) => state.Mode.mode);
+  const removeHande = (e: any, index: number) => {
+    console.log(e, index);
+  };
   return (
     <Grid item md={props.md} xs={props.xs}>
       <Item
@@ -32,7 +36,18 @@ export default function ListBox(props: {
           mode={mode}
         />
 
-        <ChatPeopleList />
+        <ChatPeopleList
+          onClick={removeHande}
+          chatList={[
+            {
+              authProvider: "local",
+              name: "Amin Teymuri",
+              email: "teymuri.amin@gmail.com",
+              uid: "pyUoHeYrxxemcY7MDkFrzXEvdWg1",
+              password: "123456",
+            },
+          ]}
+        />
 
         <Fab
           size="medium"

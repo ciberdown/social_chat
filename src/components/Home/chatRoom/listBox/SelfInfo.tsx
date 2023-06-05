@@ -1,19 +1,30 @@
 import Avatar from "@mui/material/Avatar";
 import LogOut from "./logOut";
 import Mode from "../../../mode/mode";
-import { Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
-import { auth } from "../../../../app/firebase/config";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
+import { auth, db } from "../../../../app/firebase/config";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
 
 export default function SelfInfo(props: {}) {
   const mode: "dark" | "light" = useSelector((state: any) => state.Mode.mode);
   const [userName, setUserName] = useState<string>("");
+  const realTimeThisUserUpdate = (uid: string) => {
+    const unchange = onSnapshot(doc(db, "users", uid), (doc) => {
+      const res = doc.data();
+      if (res) {
+        setUserName(res.name);
+      }
+    });
+  };
   useEffect(() => {
-    setTimeout(() => {
+    const myInterval = setInterval(() => {
       const { currentUser } = auth;
+      if (auth.currentUser !== null) clearInterval(myInterval);
       if (currentUser) {
         currentUser.displayName && setUserName(currentUser.displayName);
+        currentUser.uid && realTimeThisUserUpdate(currentUser.uid);
       }
     }, 500);
   }, [userName]);
@@ -35,16 +46,18 @@ export default function SelfInfo(props: {}) {
           <Avatar sx={{ bgcolor: "#e91e63", color: "white" }}>
             {userName[0]}
           </Avatar>
-          <Typography color={mode==='dark'?'secondary.main':'black'} fontWeight="bold" fontSize="1.2rem">
+          <Typography
+            color={mode === "dark" ? "white" : "black"}
+            fontWeight="bold"
+            fontSize="1.2rem"
+          >
             {userName}
           </Typography>
         </Stack>
       </IconButton>
 
       <Stack direction="row" alignItems="center">
-        <Tooltip title="change mode">
-          <Mode icons="icon_two" />
-        </Tooltip>
+        <Mode icons="icon_two" />
         <LogOut />
       </Stack>
     </Box>

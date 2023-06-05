@@ -14,3 +14,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export interface UserInterface {
+  authProvider: string;
+  name: string;
+  email: string;
+  uid: string;
+  password: string;
+  image?: string;
+};
