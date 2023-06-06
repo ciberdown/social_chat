@@ -21,6 +21,7 @@ export default function SearchBox({
   >("determinate");
   const searchUser = async (str: string) => {
     setProgressbar("indeterminate");
+    setSearchBar([]);
     const q = query(
       collection(db, "users"),
       where("name", ">=", str),

@@ -26,8 +26,7 @@ export default function SearchResults({ searchBar, open, setOpen, setValue }: Pr
         <ChatPeopleList
           onClick={addUserHandle}
           chatList={searchBar}
-          disableRemove
-          disableChats
+          searchMode
         />
       )}
       <br />

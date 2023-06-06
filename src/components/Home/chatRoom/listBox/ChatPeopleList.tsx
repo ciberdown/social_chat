@@ -29,13 +29,11 @@ const randomColor = () => {
 
 export default function ChatPeopleList({
   chatList,
-  disableRemove = false,
-  disableChats = false,
+  searchMode = false,
   onClick,
 }: {
   chatList: any;
-  disableRemove?: boolean;
-  disableChats?: boolean;
+  searchMode?: boolean;
   onClick: Function;
 }) {
   const mode = useSelector((state: any) => state.Mode.mode);
@@ -45,7 +43,7 @@ export default function ChatPeopleList({
         width: "100%",
         borderRadius: 1,
         bgcolor: mode === "dark" ? grey[900] : "white",
-        ":hover": disableChats
+        ":hover": searchMode
           ? {
               bgcolor: mode === "dark" ? grey[800] : blue[100],
               cursor: "pointer",
@@ -65,6 +63,7 @@ export default function ChatPeopleList({
             >
               <Stack direction="row" gap={1}>
                 <Avatar
+                  src={item.photoURL}
                   sx={{
                     bgcolor: randomColor().bgcolor,
                     color: "white",
@@ -73,7 +72,7 @@ export default function ChatPeopleList({
                 >
                   A
                 </Avatar>
-                {disableChats ? (
+                {searchMode ? (
                   <Stack ml={4} height={22}>
                     <Typography
                       fontWeight="bolder"
@@ -96,7 +95,7 @@ export default function ChatPeopleList({
                   </Typography>
                 )}
 
-                {!disableChats && (
+                {!searchMode && (
                   <Typography
                     height={46}
                     overflow="hidden"
@@ -122,7 +121,7 @@ export default function ChatPeopleList({
                 )}
               </Stack>
 
-              {!disableRemove ? (
+              {!searchMode ? (
                 <IconButton sx={{ alignSelf: "end" }}>
                   <Tooltip title="Delete chat">
                     <DeleteIcon

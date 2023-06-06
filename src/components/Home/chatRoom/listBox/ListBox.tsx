@@ -7,13 +7,14 @@ import { getTheme } from "../../../../styles/theme";
 import { useSelector } from "react-redux";
 import SearchBox from "./SearchBox";
 
-export default function ListBox(props: {
+interface Props {
   md?: number;
   xs?: number;
   lg?: number;
   sm?: number;
   sx?: object;
-}) {
+}
+export default function ListBox(props: Props) {
   const mode = useSelector((state: any) => state.Mode.mode);
   const removeHande = (e: any, index: number) => {
     console.log(e, index);
