@@ -6,6 +6,8 @@ import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { blue, grey, orange } from "@mui/material/colors";
 import LibraryAddTwoToneIcon from "@mui/icons-material/LibraryAddTwoTone";
+import { User } from "../../../../app/firebase/config";
+import { State } from "../../../../redux/userInterface";
 
 const randomColor = () => {
   let hex = Math.floor(Math.random() * 0xffffff);
@@ -31,11 +33,12 @@ export default function ChatPeopleList({
   searchMode = false,
   onClick,
 }: {
-  chatList: any;
+  chatList: User[] ;
   searchMode?: boolean;
   onClick: Function;
 }) {
-  const mode = useSelector((state: any) => state.Mode.mode);
+  console.log(chatList)
+  const mode = useSelector((state: State) => state.Mode.mode);
   return (
     <List
       sx={{
@@ -51,7 +54,7 @@ export default function ChatPeopleList({
       }}
     >
       {chatList !== null &&
-        chatList.map((item: any, index: number) => {
+        chatList.map((item: User, index: number) => {
           return (
             <div key={index} onClick={(e) => onClick(e, item)}>
               <Stack

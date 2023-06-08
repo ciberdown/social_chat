@@ -1,4 +1,4 @@
-export const ChangeModeAction = () => (dispatch: any, getState: any) => {
+export const ChangeModeAction = () => (dispatch: Function, getState: Function) => {
   //with Redux-thunk nested arrow functions
   const { Mode: thisState } = getState();
   let newMode: string = thisState.mode === "dark" ? "light" : "dark";

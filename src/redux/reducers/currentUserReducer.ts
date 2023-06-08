@@ -1,6 +1,8 @@
+import { PayloadAction } from "@reduxjs/toolkit";
+
 const initial_value: [] = [];
 
-const CurrentUserInfoReducer = (state = { currentUserInfo: initial_value }, action: any) => {
+const CurrentUserInfoReducer = (state = { currentUserInfo: initial_value }, action: {type: string, payload:PayloadAction}) => {
   switch (action.type) {
     case "UPDATE":
       return { currentUserInfo: action.payload };

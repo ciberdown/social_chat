@@ -18,6 +18,7 @@ import { getStyles } from "../../styles/theme";
 import { registerWithEmailAndPassword } from "./firebaseSignUp";
 
 import ImageUpload from "./imageUpload";
+import { State } from "../../redux/userInterface";
 function Copyright(props: any) {
   return (
     <Typography
@@ -39,7 +40,7 @@ function Copyright(props: any) {
 export default function SignUp() {
   const [uploadImageURL, setUploadImageURL] = React.useState<string>("");
   const navigate = useNavigate();
-  const mode: "light" | "dark" = useSelector((state: any) => state.Mode.mode);
+  const mode: "light" | "dark" = useSelector((state: State) => state.Mode.mode);
   const styles = getStyles(mode);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

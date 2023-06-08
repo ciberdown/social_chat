@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import SearchBox from "./SearchBox";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../../app/firebase/config";
+import { State } from "../../../../redux/userInterface";
 interface Props {
   md?: number;
   xs?: number;
@@ -27,9 +28,9 @@ const searchUser = async (oppUid: string) => {
   }
 };
 export default function ListBox(props: Props) {
-  const mode = useSelector((state: any) => state.Mode.mode);
+  const mode = useSelector((state: State) => state.Mode.mode);
   const currentUser = useSelector(
-    (state: any) => state.CurrentUserInfo.currentUserInfo
+    (state: State) => state.CurrentUserInfo.currentUserInfo
   );
   if (currentUser?.chats) {
     //if chats exits
@@ -38,7 +39,7 @@ export default function ListBox(props: Props) {
       searchUser(item);
     });
   }
-  const removeHande = (e: any, index: number) => {
+  const removeHande = (e: HTMLDivElement, index: number) => {
     console.log(e, index);
   };
   return (
@@ -68,6 +69,7 @@ export default function ListBox(props: Props) {
               email: "teymuri.amin@gmail.com",
               uid: "pyUoHeYrxxemcY7MDkFrzXEvdWg1",
               password: "123456",
+              photoURL: ''
             },
           ]}
         />

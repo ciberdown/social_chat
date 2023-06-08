@@ -1,9 +1,9 @@
 import { InputAdornment, TextField } from "@mui/material";
-import { useState } from "react";
+import { ChangeEvent, ChangeEventHandler, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import SearchIcon from "@mui/icons-material/Search";
 import { collection, getDocs, query, startAt, where } from "firebase/firestore";
-import { UserInterface, auth, db } from "../../../../app/firebase/config";
+import { User, UserInterface, auth, db } from "../../../../app/firebase/config";
 import SearchResults from "./searchResults";
 
 export default function SearchBox({
@@ -13,7 +13,7 @@ export default function SearchBox({
   mode: "dark" | "light";
   sx: object;
 }) {
-  const [searchBar, setSearchBar] = useState([]);
+  const [searchBar, setSearchBar] = useState<User[]>([]);
   const [openResults, setOpenResults] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [progressbar, setProgressbar] = useState<
@@ -29,11 +29,11 @@ export default function SearchBox({
     );
     try {
       const querySnapshot = await getDocs(q);
-      let list: any = [];
+      let list: User[] = [];
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         doc.data().name !== auth.currentUser?.displayName &&
-          list.push(doc.data());
+          list.push(doc.data() as User);
       });
       setProgressbar("determinate");
       if (list.length !== 0) {
@@ -47,7 +47,7 @@ export default function SearchBox({
       setProgressbar("determinate");
     }
   };
-  const handleChange = (event: any) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const str: string = event.target.value;
     setSearchTerm(str);
     searchUser(str);

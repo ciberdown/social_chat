@@ -9,10 +9,11 @@ import { useDispatch } from "react-redux";
 import { ChangeModeAction } from "../../redux/actions/ModeActions";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import { Tooltip } from "@mui/material";
+import { State } from "../../redux/userInterface";
 
 
 export default function Mode({ icons = 'icon_one' }: { icons?: "icon_one" | "icon_two" }) {
-  const mode: 'light'|'dark' = useSelector((state: any) => state.Mode.mode);
+  const mode: 'light'|'dark' = useSelector((state: State) => state.Mode.mode);
   const dispatch = useDispatch();
   const toggleMode = (): void => {
     dispatch(ChangeModeAction());

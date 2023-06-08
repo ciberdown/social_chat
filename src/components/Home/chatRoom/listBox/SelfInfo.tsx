@@ -3,11 +3,12 @@ import LogOut from "./logOut";
 import Mode from "../../../mode/mode";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+import { State } from "../../../../redux/userInterface";
 
 export default function SelfInfo(props: {}) {
-  const mode: "dark" | "light" = useSelector((state: any) => state.Mode.mode);
+  const mode: "dark" | "light" = useSelector((state: State) => state.Mode.mode);
   const currentUserInfo = useSelector(
-    (state: any) => state.CurrentUserInfo.currentUserInfo
+    (state: State) => state.CurrentUserInfo.currentUserInfo
   );
   return (
     <Box

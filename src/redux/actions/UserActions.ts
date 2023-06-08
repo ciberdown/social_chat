@@ -1,4 +1,4 @@
-export const UserActions = (newUser:string) => (dispatch: any, getState: any) => {
+export const UserActions = (newUser:string) => (dispatch: Function, getState: Function) => {
     //with Redux-thunk nested arrow functions
     const { Users: thisState } = getState();
 

@@ -28,5 +28,6 @@ export interface User{
   password: string | number,
   photoURL: string,
   uid: string,
-  authProvider: string
+  authProvider: string,
+  chats?: []
 }

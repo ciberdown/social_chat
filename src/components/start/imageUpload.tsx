@@ -1,4 +1,4 @@
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, ButtonClasses } from "@mui/material";
 import { useSelector } from "react-redux";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
@@ -9,21 +9,22 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
+import { State } from "../../redux/userInterface";
 
 export default function ImageUpload({
   setUploadImageURL,
 }: {
   setUploadImageURL: Function;
 }) {
-  const mode: "light" | "dark" = useSelector((state: any) => state.Mode.mode);
+  const mode: "light" | "dark" = useSelector((state: State) => state.Mode.mode);
   const [progress, setProgress] = useState<number>(0);
 
   const handleAddProfileImage = (event: any) => {
     // console.log(event.target.files[0]);
     addFileToFirebase(event.target.files[0]);
   };
-  const addFileToFirebase = (file: any) => {
+  const addFileToFirebase = (file: File) => {
     const storage = getStorage();
 
     // Create the file metadata

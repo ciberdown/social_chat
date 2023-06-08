@@ -1,12 +1,13 @@
 import ChatPeopleList from "./ChatPeopleList";
-import { UserInterface, db } from "../../../../app/firebase/config";
+import { User, UserInterface, db } from "../../../../app/firebase/config";
 import { doc, updateDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import { State } from "../../../../redux/userInterface";
 
 interface Props {
   open: boolean;
   setOpen: Function;
-  searchBar: any;
+  searchBar: User[];
   setValue: Function;
 }
 const updateChatDoc = async (oppUID: string, currentUID: string) => {
@@ -29,9 +30,9 @@ export default function SearchResults({
   setValue,
 }: Props) {
   const currentUser = useSelector(
-    (state: any) => state.CurrentUserInfo.currentUserInfo
+    (state: State) => state.CurrentUserInfo.currentUserInfo
   );
-  const addUserHandle = (e: any, item: any) => {
+  const addUserHandle = (e: HTMLDivElement, item: User) => {
     const oppUser = item;
     updateChatDoc(oppUser.uid, currentUser.uid);
     setOpen(false);

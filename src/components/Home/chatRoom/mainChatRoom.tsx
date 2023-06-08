@@ -5,7 +5,7 @@ import ListBox from "./listBox/ListBox";
 import ChatRoomBox from "./chatroomBox/ChatRoomBox";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { auth, db } from "../../../app/firebase/config";
+import { User, auth, db } from "../../../app/firebase/config";
 import { CurrentUserAction } from "../../../redux/actions/CurrentUserActions";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { AnyAction, Dispatch } from "redux";
@@ -14,14 +14,14 @@ const getDataFirsTime = async (uid: string, dispatch: Dispatch<AnyAction>) => {
   try {
     const docRef = doc(db, "users", uid);
     const res = await getDoc(docRef);
-    if (res.exists()) dispatch(CurrentUserAction(res.data()));
+    if (res.exists()) dispatch(CurrentUserAction(res.data() as User));
   } catch (err) {
     console.error(err);
   }
 };
 const realTimeUpdate = (uid: string, dispatch: Dispatch<AnyAction>) => {
   const onSnap = onSnapshot(doc(db, "users", uid), (doc) => {
-    dispatch(CurrentUserAction(doc.data()));
+    dispatch(CurrentUserAction(doc.data() as User));
     console.log('firestore updated')
     // console.log(doc.data());//result
   });
