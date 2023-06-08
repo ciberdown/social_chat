@@ -22,3 +22,11 @@ export interface UserInterface {
   password: string;
   image?: string;
 };
+export interface User{
+  name:string,
+  email: string,
+  password: string | number,
+  photoURL: string,
+  uid: string,
+  authProvider: string
+}
