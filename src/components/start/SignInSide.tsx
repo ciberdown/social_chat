@@ -36,7 +36,7 @@ function Copyright(props: any) {
 }
 
 export default function SignInSide() {
-  const [rememberVal, setRememberVal] = useState<boolean>(false);
+  const checkboxRef = React.useRef<boolean>(false);
   const [userNotFound, setUserNotFound] = useState<string>("");
   const [remmebered_email, set_remmebered_email] = useState<string | null>(
     localStorage.getItem("userInfo_user")
@@ -50,7 +50,7 @@ export default function SignInSide() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (rememberVal) {
+    if (checkboxRef.current) {
       localStorage.setItem("userInfo_user", data.get("email") as string);
       localStorage.setItem("userInfo_pass", data.get("password") as string);
     }
@@ -133,8 +133,11 @@ export default function SignInSide() {
             <FormControlLabel
               control={
                 <Checkbox
-                  onClick={() => setRememberVal(true)}
-                  checked={rememberVal}
+                  onClick={() => {
+                    checkboxRef.current =
+                      checkboxRef.current === false ? true : false;
+                    console.log(checkboxRef.current);
+                  }}
                   value="remember"
                   color="primary"
                 />

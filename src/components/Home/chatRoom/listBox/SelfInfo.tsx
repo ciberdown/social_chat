@@ -26,7 +26,7 @@ export default function SelfInfo(props: {}) {
             sx={{ bgcolor: "#e91e63", color: "white" }}
             src={currentUserInfo?.photoURL}
           >
-            {currentUserInfo.name && currentUserInfo.name[0]}
+            {currentUserInfo?.name && currentUserInfo?.name[0]}
           </Avatar>
           <Typography
             color={mode === "dark" ? "white" : "black"}

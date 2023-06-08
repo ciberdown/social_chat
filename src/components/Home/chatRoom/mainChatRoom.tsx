@@ -22,6 +22,7 @@ const getDataFirsTime = async (uid: string, dispatch: Dispatch<AnyAction>) => {
 const realTimeUpdate = (uid: string, dispatch: Dispatch<AnyAction>) => {
   const onSnap = onSnapshot(doc(db, "users", uid), (doc) => {
     dispatch(CurrentUserAction(doc.data()));
+    console.log('firestore updated')
     // console.log(doc.data());//result
   });
 };

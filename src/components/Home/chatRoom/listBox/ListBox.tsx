@@ -1,12 +1,13 @@
 import { Item } from "../mainChatRoom";
-import { Container, CssBaseline, Fab, Grid, TextField } from "@mui/material";
+import { CssBaseline, Fab, Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SelfInfo from "./SelfInfo";
 import ChatPeopleList from "./ChatPeopleList";
 import { getTheme } from "../../../../styles/theme";
 import { useSelector } from "react-redux";
 import SearchBox from "./SearchBox";
-
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../../../app/firebase/config";
 interface Props {
   md?: number;
   xs?: number;
@@ -14,8 +15,29 @@ interface Props {
   sm?: number;
   sx?: object;
 }
+const searchUser = async (oppUid: string) => {
+  const q = query(collection(db, "users"), where("uid", "==", oppUid));
+  try {
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.data()); //people who you added is here
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 export default function ListBox(props: Props) {
   const mode = useSelector((state: any) => state.Mode.mode);
+  const currentUser = useSelector(
+    (state: any) => state.CurrentUserInfo.currentUserInfo
+  );
+  if (currentUser?.chats) {
+    //if chats exits
+    const addedUids: string[] = Object.keys(currentUser.chats); //people added to chat
+    addedUids.map((item) => {
+      searchUser(item);
+    });
+  }
   const removeHande = (e: any, index: number) => {
     console.log(e, index);
   };
