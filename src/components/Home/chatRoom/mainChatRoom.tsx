@@ -7,47 +7,48 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { User, auth, db } from "../../../app/firebase/config";
 import { CurrentUserAction } from "../../../redux/actions/CurrentUserActions";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
-import { AnyAction, Dispatch } from "redux";
+import {
+  DocumentData,
+  DocumentReference,
+  doc,
+  getDoc,
+  onSnapshot,
+} from "firebase/firestore";
 
-const getDataFirsTime = async (uid: string, dispatch: Dispatch<AnyAction>) => {
-  try {
-    const docRef = doc(db, "users", uid);
-    const res = await getDoc(docRef);
-    if (res.exists()) dispatch(CurrentUserAction(res.data() as User));
-  } catch (err) {
-    console.error(err);
-  }
-};
-const realTimeUpdate = (uid: string, dispatch: Dispatch<AnyAction>) => {
-  const onSnap = onSnapshot(doc(db, "users", uid), (doc) => {
-    dispatch(CurrentUserAction(doc.data() as User));
-    console.log('firestore updated')
-    // console.log(doc.data());//result
-  });
-};
 export default function MainChatRoom() {
   const dispatch = useDispatch();
   const CUser = useSelector(
     (state: any) => state.CurrentUserInfo.currentUserInfo
   );
   useEffect(() => {
-    console.log(CUser.length);
     const interval = setInterval(() => {
       if (auth.currentUser !== null) {
         clearInterval(interval);
-        if (CUser.length === 0) {
-          // clearInterval(myInterval);
-          const uid = auth.currentUser?.uid;
-          getDataFirsTime(uid, dispatch);
 
-          realTimeUpdate(uid, dispatch);
-          console.log("just one time excute");
-        }
+        const uid = auth.currentUser?.uid;
+        const docRef = doc(db, "users", uid);
+
+        updateMyUser(docRef);
+
+        console.log("just one time execute");
       }
     }, 500);
-  }, []);
 
+    return () => {
+      clearInterval(interval); // Clean up the interval when the component unmounts
+    };
+  }, []);
+  const updateMyUser = (docRef: DocumentReference<DocumentData>) => {
+    try {
+      const onSnap = onSnapshot(docRef, (doc) => {
+        console.log("updated");
+        // console.log(doc.data()?.chats as User);
+        dispatch(CurrentUserAction(doc.data() as User));
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <Grid container>
       <ListBox sx={{ height: "90vh", bgcolor: "grey" }} md={4} xs={6} />

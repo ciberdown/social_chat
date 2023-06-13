@@ -2,12 +2,13 @@ import List from "@mui/material/List";
 import Avatar from "@mui/material/Avatar";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
-import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { blue, grey, orange } from "@mui/material/colors";
+import { grey, orange } from "@mui/material/colors";
 import LibraryAddTwoToneIcon from "@mui/icons-material/LibraryAddTwoTone";
 import { User } from "../../../../app/firebase/config";
 import { State } from "../../../../redux/userInterface";
+import { ListUser } from "./ListBox";
 
 const randomColor = () => {
   let hex = Math.floor(Math.random() * 0xffffff);
@@ -31,13 +32,16 @@ const randomColor = () => {
 export default function ChatPeopleList({
   chatList,
   searchMode = false,
-  onClick,
+  removeHandle,
+  startChatHandle,
+  addUserHandle,
 }: {
-  chatList: User[] ;
+  chatList: User[] | ListUser[];
   searchMode?: boolean;
-  onClick: Function;
+  removeHandle?: Function;
+  startChatHandle?: Function;
+  addUserHandle?: Function;
 }) {
-  console.log(chatList)
   const mode = useSelector((state: State) => state.Mode.mode);
   return (
     <List
@@ -45,19 +49,26 @@ export default function ChatPeopleList({
         width: "100%",
         borderRadius: 1,
         bgcolor: mode === "dark" ? grey[900] : "white",
-        ":hover": searchMode
-          ? {
-              bgcolor: mode === "dark" ? grey[800] : blue[100],
-              cursor: "pointer",
-            }
-          : {},
       }}
     >
       {chatList !== null &&
-        chatList.map((item: User, index: number) => {
+        chatList.map((item: User | ListUser, index: number) => {
           return (
-            <div key={index} onClick={(e) => onClick(e, item)}>
+            <Box
+              onClick ={addUserHandle && ((e: any)=>addUserHandle(e, item))}
+              sx={{
+                borderRadius: "2rem",
+                ":hover": searchMode
+                  ? {
+                      bgcolor: mode === "dark" ? grey[800] : grey[200],
+                      cursor: "pointer",
+                    }
+                  : {},
+              }}
+              key={index}
+            >
               <Stack
+              
                 direction="row"
                 sx={{ height: "auto", py: 1, m: 1, display: "flex" }}
                 alignItems="center"
@@ -85,50 +96,61 @@ export default function ChatPeopleList({
                       >
                         {item?.name}
                       </Typography>
-                      <Typography alignSelf="start">{item?.email}</Typography>
+                      <Typography alignSelf="start">
+                        {(item as User).email}
+                      </Typography>
                     </Stack>
                   ) : (
                     <Typography
                       fontWeight="bold"
-                      alignSelf="start"
-                      mx={1}
-                      sx={{ color: mode === "dark" ? "white" : "black" }}
+                      alignSelf={
+                        (item as ListUser).lastChat.message === ""
+                          ? "center"
+                          : "start"
+                      }
+                      mx={(item as ListUser).lastChat.message === "" ? 3 : 1}
+                      sx={{
+                        color: mode === "dark" ? "white" : "black",
+                        fontSize:
+                          (item as ListUser).lastChat.message === ""
+                            ? "1.2rem"
+                            : "1rem",
+                      }}
                     >
                       {item.name}
                     </Typography>
                   )}
 
-                  {!searchMode && (
-                    <Typography
-                      height={46}
-                      overflow="hidden"
-                      variant="caption"
-                      fontSize=".9rem"
-                      alignSelf="start"
-                      ml={1}
-                    >
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Quas iure hic quaerat numquam itaque officiis iste
-                      distinctio deserunt nihil dolorem provident laboriosam id
-                      quae eos veniam veritatis, voluptas necessitatibus. Nulla
-                      cum nisi eveniet dolore, ex aperiam, a repellat earum
-                      accusamus et excepturi, eos quia at hic soluta! Sint
-                      debitis quae quisquam quo tempore possimus voluptatum et
-                      non modi alias aspernatur, deserunt quidem dolores optio
-                      nemo. Error nihil dolor culpa aliquid earum, accusantium
-                      placeat explicabo pariatur soluta saepe. Corporis
-                      explicabo doloribus, modi fugit at praesentium pariatur et
-                      voluptate quasi cum iure. Quam voluptatem aliquam cum
-                      reprehenderit adipisci. Tempora dolorum natus omnis!
-                    </Typography>
-                  )}
+                  {!searchMode &&
+                    (item as ListUser).lastChat.message !== "" && (
+                      <Typography
+                        height={46}
+                        overflow="hidden"
+                        variant="caption"
+                        fontSize=".9rem"
+                        alignSelf="start"
+                        mt={2}
+                        ml={1}
+                      >
+                        {(item as ListUser).lastChat.message + "..."}
+                      </Typography>
+                    )}
                 </Stack>
 
                 {!searchMode ? (
-                  <IconButton sx={{ alignSelf: "end" }}>
+                  <IconButton disableRipple sx={{ alignSelf: "end" }}>
+                    {(item as ListUser).lastChat.message !== "" && (
+                      <Typography
+                        fontSize=".7rem"
+                        alignSelf="end"
+                        justifySelf="end"
+                        mr="1rem"
+                      >
+                        {(item as ListUser).lastChat.date}
+                      </Typography>
+                    )}
                     <Tooltip title="Delete chat">
                       <DeleteIcon
-                        onClick={(e) => onClick(e, index)}
                         sx={{
                           color: mode === "dark" ? "white" : "black",
                           ":hover": {
@@ -155,7 +177,7 @@ export default function ChatPeopleList({
               {index !== chatList.length - 1 && (
                 <Divider variant="inset" component="li" />
               )}
-            </div>
+            </Box>
           );
         })}
     </List>

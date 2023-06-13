@@ -28,7 +28,7 @@ export const registerWithEmailAndPassword = async (
       email,
       password,
       photoURL: uploadImageURL,
-      chats: {},
+      chats: [],
     });
 
     console.log("sign up successful");

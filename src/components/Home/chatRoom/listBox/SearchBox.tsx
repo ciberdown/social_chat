@@ -20,34 +20,41 @@ export default function SearchBox({
     "indeterminate" | "determinate"
   >("determinate");
   const searchUser = async (str: string) => {
-    setProgressbar("indeterminate");
-    setSearchBar([]);
-    const q = query(
-      collection(db, "users"),
-      where("name", ">=", str),
-      where("name", "<=", str + "\uf8ff")
-    );
-    try {
-      const querySnapshot = await getDocs(q);
-      let list: User[] = [];
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        doc.data().name !== auth.currentUser?.displayName &&
-          list.push(doc.data() as User);
-      });
-      setProgressbar("determinate");
-      if (list.length !== 0) {
-        //users found
-        setOpenResults(true);
-        setSearchBar(list);
-        // console.log(list);
+    if (str !== "") {
+      setProgressbar("indeterminate");
+      setOpenResults(false)
+      setSearchBar([]);
+      const q = query(
+        collection(db, "users"),
+        where("name", ">=", str),
+        where("name", "<=", str + "\uf8ff")
+      );
+      try {
+        const querySnapshot = await getDocs(q);
+        let list: User[] = [];
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          doc.data().name !== auth.currentUser?.displayName &&
+            list.push(doc.data() as User);
+        });
+        setProgressbar("determinate");
+        if (list.length !== 0) {
+          //users found
+          setOpenResults(true);
+          setSearchBar(list);
+          // console.log(list);
+        }
+      } catch (err) {
+        console.error(err);
+        setProgressbar("determinate");
       }
-    } catch (err) {
-      console.error(err);
-      setProgressbar("determinate");
+    } else {
+      setOpenResults(false)
     }
   };
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const str: string = event.target.value;
     setSearchTerm(str);
     searchUser(str);

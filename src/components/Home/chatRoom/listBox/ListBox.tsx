@@ -6,9 +6,10 @@ import ChatPeopleList from "./ChatPeopleList";
 import { getTheme } from "../../../../styles/theme";
 import { useSelector } from "react-redux";
 import SearchBox from "./SearchBox";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../../../app/firebase/config";
+import { Timestamp, collection, getDocs, query, where } from "firebase/firestore";
+import { User, db } from "../../../../app/firebase/config";
 import { State } from "../../../../redux/userInterface";
+import { useState } from "react";
 interface Props {
   md?: number;
   xs?: number;
@@ -16,15 +17,25 @@ interface Props {
   sm?: number;
   sx?: object;
 }
+export interface ListUser {
+  mixedUID: string;
+  lastChat: {
+    message: string;
+    date: string;
+  };
+  name: string;
+  photoURL: string;
+  email: string;
+}
 const searchUser = async (oppUid: string) => {
   const q = query(collection(db, "users"), where("uid", "==", oppUid));
   try {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      console.log(doc.data()); //people who you added is here
+      // console.log(doc.data()); //people who you added is here
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 export default function ListBox(props: Props) {
@@ -34,6 +45,7 @@ export default function ListBox(props: Props) {
   );
   if (currentUser?.chats) {
     //if chats exits
+
     const addedUids: string[] = Object.keys(currentUser.chats); //people added to chat
     addedUids.map((item) => {
       searchUser(item);
@@ -42,6 +54,9 @@ export default function ListBox(props: Props) {
   const removeHande = (e: HTMLDivElement, index: number) => {
     console.log(e, index);
   };
+  const startChatHandle = ()=>{
+    console.log('start chat')
+  }
   return (
     <Grid item md={props.md} xs={props.xs}>
       <Item
@@ -61,17 +76,13 @@ export default function ListBox(props: Props) {
         />
 
         <ChatPeopleList
-          onClick={removeHande}
-          chatList={[
-            {
-              authProvider: "local",
-              name: "Amin Teymuri",
-              email: "teymuri.amin@gmail.com",
-              uid: "pyUoHeYrxxemcY7MDkFrzXEvdWg1",
-              password: "123456",
-              photoURL: ''
-            },
-          ]}
+          startChatHandle={startChatHandle}
+          removeHandle = {removeHande}
+          chatList={
+            currentUser?.chats === null
+              ? []
+              : (Object.values(currentUser?.chats || {}) as User[])
+          }
         />
 
         <Fab

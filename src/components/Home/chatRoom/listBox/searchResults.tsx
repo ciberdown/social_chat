@@ -1,6 +1,6 @@
 import ChatPeopleList from "./ChatPeopleList";
-import { User, UserInterface, db } from "../../../../app/firebase/config";
-import { doc, updateDoc } from "firebase/firestore";
+import { User, db } from "../../../../app/firebase/config";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { State } from "../../../../redux/userInterface";
 
@@ -10,19 +10,73 @@ interface Props {
   searchBar: User[];
   setValue: Function;
 }
-const updateChatDoc = async (oppUID: string, currentUID: string) => {
-  const date = new Date();
+const add_user_to_chats = async (
+  UID: string,
+  otherUid: string,
+  otherName: string,
+  otherPhotoURL: string,
+  mixedUID: string
+) => {
   try {
-    const docRef = doc(db, "users", currentUID);
-    await updateDoc(docRef, {
-      chats: {
-        [oppUID]: [{ message: "hello, world", time: date, read: false }],
-      },
-    });
+    const docRef = doc(db, "users", UID);
+    const docSnapshot = await getDoc(docRef);
+    const existingData = docSnapshot.data();
+    const date: Date = new Date();
+    if (existingData) {
+      await updateDoc(docRef, {
+        chats: {
+          ...existingData.chats,
+          [otherUid]: {
+            name: otherName,
+            photoURL: otherPhotoURL,
+            lastChat: { message: "", date: date.toLocaleDateString() },
+            mixedUID: mixedUID,
+          },
+        },
+      });
+    }
   } catch (err) {
-    // console.error(err);
+    console.error(err);
   }
 };
+const updateChatDoc = async (currentUser: User, oppUser: User) => {
+  //update currentUser
+  const mixedUID: string = currentUser.uid + oppUser.uid;
+  add_user_to_chats(
+    currentUser.uid,
+    oppUser.uid,
+    oppUser.name,
+    oppUser.photoURL,
+    mixedUID
+  );
+  //update oppUser
+  add_user_to_chats(
+    oppUser.uid,
+    currentUser.uid,
+    currentUser.name,
+    currentUser.photoURL,
+    mixedUID
+  );
+  try {
+    //add chats doc data
+    const docRef = await setDoc(doc(db, "chats", mixedUID), {});
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+// const updateChatDoc = async (oppUID: string, currentUID: string) => {
+//   const date = new Date();
+//   try {
+//     const docRef = doc(db, "users", currentUID);
+//     await updateDoc(docRef, {
+//       chats: {
+//         [oppUID]: [{ message: "hello, world", time: date, read: false }],
+//       },
+//     });
+//   } catch (err) {
+//     // console.error(err);
+//   }
+// };
 export default function SearchResults({
   searchBar,
   open,
@@ -34,7 +88,7 @@ export default function SearchResults({
   );
   const addUserHandle = (e: HTMLDivElement, item: User) => {
     const oppUser = item;
-    updateChatDoc(oppUser.uid, currentUser.uid);
+    updateChatDoc(currentUser, oppUser);
     setOpen(false);
     setValue("");
     //add doc chats firebase users/id/chats:{
@@ -50,7 +104,7 @@ export default function SearchResults({
     <>
       {open && (
         <ChatPeopleList
-          onClick={addUserHandle}
+          addUserHandle={addUserHandle}
           chatList={searchBar}
           searchMode
         />
