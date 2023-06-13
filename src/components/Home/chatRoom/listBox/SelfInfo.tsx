@@ -30,7 +30,7 @@ export default function SelfInfo(props: {}) {
             {currentUserInfo?.name && currentUserInfo?.name[0]}
           </Avatar>
           <Typography
-            color={mode === "dark" ? "white" : "black"}
+            color={mode === "dark" ? "secondary.main" : "black"}
             fontWeight="bold"
             fontSize="1.2rem"
           >

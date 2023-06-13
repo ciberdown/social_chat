@@ -6,7 +6,13 @@ import ChatPeopleList from "./ChatPeopleList";
 import { getTheme } from "../../../../styles/theme";
 import { useSelector } from "react-redux";
 import SearchBox from "./SearchBox";
-import { Timestamp, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  Timestamp,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { User, db } from "../../../../app/firebase/config";
 import { State } from "../../../../redux/userInterface";
 import { useState } from "react";
@@ -51,12 +57,12 @@ export default function ListBox(props: Props) {
       searchUser(item);
     });
   }
-  const removeHande = (e: HTMLDivElement, index: number) => {
-    console.log(e, index);
+  const removeHande = (mixUID: string) => {
+    console.log(mixUID + "removed");
   };
-  const startChatHandle = ()=>{
-    console.log('start chat')
-  }
+  const startChatHandle = (mixUID: string) => {
+    console.log(mixUID+' added');
+  };
   return (
     <Grid item md={props.md} xs={props.xs}>
       <Item
@@ -77,7 +83,7 @@ export default function ListBox(props: Props) {
 
         <ChatPeopleList
           startChatHandle={startChatHandle}
-          removeHandle = {removeHande}
+          removeHandle={removeHande}
           chatList={
             currentUser?.chats === null
               ? []

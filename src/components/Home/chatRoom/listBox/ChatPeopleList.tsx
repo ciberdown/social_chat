@@ -2,13 +2,22 @@ import List from "@mui/material/List";
 import Avatar from "@mui/material/Avatar";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
-import { Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useSelector } from "react-redux";
-import { grey, orange } from "@mui/material/colors";
+import { green, grey, orange } from "@mui/material/colors";
 import LibraryAddTwoToneIcon from "@mui/icons-material/LibraryAddTwoTone";
 import { User } from "../../../../app/firebase/config";
 import { State } from "../../../../redux/userInterface";
 import { ListUser } from "./ListBox";
+import AddIcon from "@mui/icons-material/Add";
+import { useEffect } from "react";
 
 const randomColor = () => {
   let hex = Math.floor(Math.random() * 0xffffff);
@@ -44,142 +53,157 @@ export default function ChatPeopleList({
 }) {
   const mode = useSelector((state: State) => state.Mode.mode);
   return (
-    <List
-      sx={{
-        width: "100%",
-        borderRadius: 1,
-        bgcolor: mode === "dark" ? grey[900] : "white",
-      }}
-    >
-      {chatList !== null &&
-        chatList.map((item: User | ListUser, index: number) => {
-          return (
-            <Box
-              onClick ={addUserHandle && ((e: any)=>addUserHandle(e, item))}
-              sx={{
-                borderRadius: "2rem",
-                ":hover": searchMode
-                  ? {
-                      bgcolor: mode === "dark" ? grey[800] : grey[200],
-                      cursor: "pointer",
-                    }
-                  : {},
-              }}
-              key={index}
-            >
-              <Stack
-              
-                direction="row"
-                sx={{ height: "auto", py: 1, m: 1, display: "flex" }}
-                alignItems="center"
-                justifyContent="space-between"
-                overflow="hidden"
+    <>
+      {chatList.length !== 0 && (
+        <List
+          sx={{
+            width: "100%",
+            borderRadius: 1,
+            bgcolor: mode === "dark" ? grey[900] : "white",
+          }}
+        >
+          {chatList.map((item: User | ListUser, index: number) => {
+            return (
+              <Tooltip
+                key={index}
+                title={searchMode ? "Add user" : "start chat?"}
               >
-                <Stack direction="row" gap={1}>
-                  <Avatar
-                    src={item.photoURL}
-                    sx={{
-                      bgcolor: randomColor().bgcolor,
-                      color: "white",
-                      ml: 1,
-                    }}
+                <Box
+                  onClick={
+                    addUserHandle && ((e: any) => addUserHandle(e, item))
+                  }
+                  sx={{}}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    sx={{ height: "auto", py: 1, m: 1, display: "flex" }}
+                    alignItems="center"
+                    justifyContent="space-between"
+                    overflow="hidden"
                   >
-                    A
-                  </Avatar>
-                  {searchMode ? (
-                    <Stack ml={4} height={22}>
-                      <Typography
-                        fontWeight="bolder"
-                        alignSelf="start"
-                        fontSize="1.1rem"
-                        sx={{ color: mode === "dark" ? "white" : "black" }}
-                      >
-                        {item?.name}
-                      </Typography>
-                      <Typography alignSelf="start">
-                        {(item as User).email}
-                      </Typography>
-                    </Stack>
-                  ) : (
-                    <Typography
-                      fontWeight="bold"
-                      alignSelf={
-                        (item as ListUser).lastChat.message === ""
-                          ? "center"
-                          : "start"
+                    <Grid
+                      onClick={
+                        startChatHandle &&
+                        (() => startChatHandle((item as ListUser).mixedUID))
                       }
-                      mx={(item as ListUser).lastChat.message === "" ? 3 : 1}
-                      sx={{
-                        color: mode === "dark" ? "white" : "black",
-                        fontSize:
-                          (item as ListUser).lastChat.message === ""
-                            ? "1.2rem"
-                            : "1rem",
-                      }}
+                      container
+                      xs={10}
+                      sx={{ cursor: "pointer" }}
                     >
-                      {item.name}
-                    </Typography>
+                      <Grid item xs={searchMode ? 2 : 1}>
+                        <Avatar
+                          src={item.photoURL}
+                          sx={{
+                            bgcolor: randomColor().bgcolor,
+                            color: "white",
+                          }}
+                        >
+                          {item.name[0]}
+                        </Avatar>
+                      </Grid>
+
+                      {searchMode ? (
+                        <Grid item height={41} xs={10}>
+                          <Typography
+                            align="left"
+                            fontWeight="bolder"
+                            fontSize="1.1rem"
+                            width="100%"
+                            sx={{ color: mode === "dark" ? "white" : "black" }}
+                          >
+                            {item?.name}
+                          </Typography>
+                          <Typography align="center">
+                            {(item as User).email}
+                          </Typography>
+                        </Grid>
+                      ) : (
+                        <Grid xs={4} item>
+                          <Typography
+                            fontWeight="bold"
+                            alignSelf="center"
+                            mx={3}
+                            sx={{
+                              color: mode === "dark" ? "white" : "black",
+                              fontSize: "1.1rem",
+                            }}
+                          >
+                            {item.name}
+                          </Typography>
+                        </Grid>
+                      )}
+
+                      {!searchMode && (
+                        <Grid item xs={6}>
+                          <Typography
+                            align="left"
+                            height={46}
+                            overflow="hidden"
+                            fontSize=".9rem"
+                            width="100%"
+                          >
+                            {(item as ListUser).lastChat.message !== "" &&
+                              (item as ListUser).lastChat.message + "..."}
+                          </Typography>
+                        </Grid>
+                      )}
+                    </Grid>
+                    {!searchMode ? (
+                      <Grid item xs={2}>
+                        <Box>
+                          <IconButton
+                            onClick={
+                              removeHandle &&
+                              (() => removeHandle((item as ListUser).mixedUID))
+                            }
+                            disableRipple
+                            sx={{ alignSelf: "end" }}
+                          >
+                            <Tooltip title="Delete chat">
+                              <DeleteIcon
+                                sx={{
+                                  color: mode === "dark" ? "white" : "black",
+                                  ":hover": {
+                                    color: orange[900],
+                                  },
+                                }}
+                              />
+                            </Tooltip>
+                          </IconButton>
+                          <Typography
+                            fontSize=".7rem"
+                            alignSelf="end"
+                            justifySelf="end"
+                          >
+                            {(item as ListUser).lastChat.message !== "" &&
+                              (item as ListUser).lastChat.date}
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    ) : (
+                      <Grid item xs={2}>
+                        <AddIcon
+                          fontSize="large"
+                          sx={{
+                            ":hover": {
+                              color: green[200],
+                            },
+                          }}
+                        />
+                      </Grid>
+                    )}
+                  </Grid>
+
+                  {index !== chatList.length - 1 && (
+                    <Divider variant="inset" component="li" sx={{ mt: 2 }} />
                   )}
-
-                  {!searchMode &&
-                    (item as ListUser).lastChat.message !== "" && (
-                      <Typography
-                        height={46}
-                        overflow="hidden"
-                        variant="caption"
-                        fontSize=".9rem"
-                        alignSelf="start"
-                        mt={2}
-                        ml={1}
-                      >
-                        {(item as ListUser).lastChat.message + "..."}
-                      </Typography>
-                    )}
-                </Stack>
-
-                {!searchMode ? (
-                  <IconButton disableRipple sx={{ alignSelf: "end" }}>
-                    {(item as ListUser).lastChat.message !== "" && (
-                      <Typography
-                        fontSize=".7rem"
-                        alignSelf="end"
-                        justifySelf="end"
-                        mr="1rem"
-                      >
-                        {(item as ListUser).lastChat.date}
-                      </Typography>
-                    )}
-                    <Tooltip title="Delete chat">
-                      <DeleteIcon
-                        sx={{
-                          color: mode === "dark" ? "white" : "black",
-                          ":hover": {
-                            color: orange[900],
-                          },
-                        }}
-                      />
-                    </Tooltip>
-                  </IconButton>
-                ) : (
-                  <Tooltip title="Add User">
-                    <LibraryAddTwoToneIcon
-                      sx={{
-                        justifySelf: "end",
-                        ":hover": {
-                          color: mode === "dark" ? "white" : "black",
-                        },
-                      }}
-                    />
-                  </Tooltip>
-                )}
-              </Stack>
-
-              {index !== chatList.length - 1 && (
-                <Divider variant="inset" component="li" />
-              )}
-            </Box>
-          );
-        })}
-    </List>
+                </Box>
+              </Tooltip>
+            );
+          })}
+        </List>
+      )}
+    </>
   );
 }
