@@ -38,7 +38,7 @@ function Copyright(props: any) {
 
 export default function SignInSide() {
   const checkboxRef = React.useRef<boolean>(false);
-  const [userNotFound, setUserNotFound] = useState<string>("");
+  const [errorTxt, setErrorTxt] = useState<string>("");
   const [remmebered_email, set_remmebered_email] = useState<string | null>(
     localStorage.getItem("userInfo_user")
   );
@@ -58,7 +58,7 @@ export default function SignInSide() {
     logInWithEmailAndPassword(
       data.get("email") as string,
       data.get("password") as string,
-      setUserNotFound,
+      setErrorTxt,
       navigate
     );
   };
@@ -165,8 +165,8 @@ export default function SignInSide() {
                 </MyLink>
               </Grid>
             </Grid>
-            <Typography align="center" sx={{ color: "red" }} mt={3}>
-              {userNotFound}
+            <Typography align="center" sx={{ color: "red", fontSize:'1.1rem' }} mt={3}>
+              {errorTxt}
             </Typography>
             <Copyright sx={{ mt: 5 }} />
           </Box>

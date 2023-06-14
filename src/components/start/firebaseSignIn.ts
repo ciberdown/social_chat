@@ -4,17 +4,21 @@ import { NavigateFunction, useNavigate } from "react-router";
 export const logInWithEmailAndPassword = async (
   email: string,
   password: string,
-  setUserNotFound: Function,
+  setErrorTxt: Function,
   navigate: NavigateFunction
 ) => {
-  setUserNotFound(""); //reset
+  setErrorTxt(""); //reset
   try {
     await signInWithEmailAndPassword(auth, email, password);
     console.log("sign in successful");
     navigate("/homepage");
   } catch (err: any) {
     if (err.message === "Firebase: Error (auth/user-not-found).") {
-      setUserNotFound("user not found!");
+      setErrorTxt("user not found!");
+    } else if (
+      err.message === "Firebase: Error (auth/network-request-failed)."
+    ) {
+      setErrorTxt('network error, try your VPN!')
     } else {
       alert(err.message);
     }
