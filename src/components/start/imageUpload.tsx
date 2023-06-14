@@ -14,8 +14,10 @@ import { State } from "../../redux/userInterface";
 
 export default function ImageUpload({
   setUploadImageURL,
+  setSignUpStr,
 }: {
   setUploadImageURL: Function;
+  setSignUpStr: Function;
 }) {
   const mode: "light" | "dark" = useSelector((state: State) => state.Mode.mode);
   const [progress, setProgress] = useState<number>(0);
@@ -44,6 +46,7 @@ export default function ImageUpload({
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        progress === 100? setSignUpStr('Sign Up'):setSignUpStr('uploading image')
         setProgress(progress);
         switch (snapshot.state) {
           case "paused":

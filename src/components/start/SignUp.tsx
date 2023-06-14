@@ -38,6 +38,7 @@ function Copyright(props: any) {
 }
 
 export default function SignUp() {
+  const [signUpStr, setSignUpStr] = React.useState<string>("Sign Up");
   const [uploadImageURL, setUploadImageURL] = React.useState<string>("");
   const navigate = useNavigate();
   const mode: "light" | "dark" = useSelector((state: State) => state.Mode.mode);
@@ -125,7 +126,10 @@ export default function SignUp() {
                 sx={styles.textField}
               />
             </Grid>
-            <ImageUpload setUploadImageURL={setUploadImageURL} />
+            <ImageUpload
+              setSignUpStr={setSignUpStr}
+              setUploadImageURL={setUploadImageURL}
+            />
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -134,6 +138,7 @@ export default function SignUp() {
             </Grid>
           </Grid>
           <Button
+            disabled={signUpStr === "uploading image" ? true : false}
             type="submit"
             fullWidth
             variant="contained"
@@ -147,7 +152,7 @@ export default function SignUp() {
             }}
             color="primary"
           >
-            Sign Up
+            {signUpStr}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
