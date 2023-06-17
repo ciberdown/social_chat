@@ -17,7 +17,7 @@ import { getStyles } from "../../styles/theme";
 import Link from "@mui/material/Link";
 import { useState } from "react";
 import { logInWithEmailAndPassword } from "./firebaseSignIn";
-import { State } from "../../redux/userInterface";
+import { State } from "../../app/interfaces/interfaces";
 function Copyright(props: any) {
   return (
     <Typography
@@ -45,7 +45,7 @@ export default function SignInSide() {
   const [remmebered_pass, set_remmebered_pass] = useState<string | null>(
     localStorage.getItem("userInfo_pass")
   );
-  const mode = useSelector((state:State) => state.Mode.mode);
+  const mode = useSelector((state: State) => state.Mode.mode);
   const navigate = useNavigate();
   const styles = getStyles(mode);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -165,7 +165,11 @@ export default function SignInSide() {
                 </MyLink>
               </Grid>
             </Grid>
-            <Typography align="center" sx={{ color: "red", fontSize:'1.1rem' }} mt={3}>
+            <Typography
+              align="center"
+              sx={{ color: "red", fontSize: "1.1rem" }}
+              mt={3}
+            >
               {errorTxt}
             </Typography>
             <Copyright sx={{ mt: 5 }} />

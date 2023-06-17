@@ -5,15 +5,16 @@ import ListBox from "./listBox/ListBox";
 import ChatRoomBox from "./chatroomBox/ChatRoomBox";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { User, auth, db } from "../../../app/firebase/config";
+import { auth, db } from "../../../app/firebase/config";
+import { User } from "../../../app/interfaces/interfaces";
 import { CurrentUserAction } from "../../../redux/actions/CurrentUserActions";
 import {
   DocumentData,
   DocumentReference,
   doc,
-  getDoc,
   onSnapshot,
 } from "firebase/firestore";
+import sort_chats_by_lastChat from "./listBox/sortChatList";
 
 export default function MainChatRoom() {
   const dispatch = useDispatch();
@@ -29,7 +30,6 @@ export default function MainChatRoom() {
         const docRef = doc(db, "users", uid);
 
         updateMyUser(docRef);
-
         console.log("just one time execute");
       }
     }, 500);

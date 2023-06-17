@@ -13,8 +13,8 @@ import {
 import { useSelector } from "react-redux";
 import { green, grey, orange } from "@mui/material/colors";
 import LibraryAddTwoToneIcon from "@mui/icons-material/LibraryAddTwoTone";
-import { User } from "../../../../app/firebase/config";
-import { State } from "../../../../redux/userInterface";
+import { User } from "../../../../app/interfaces/interfaces";
+import { State } from "../../../../app/interfaces/interfaces";
 import { ListUser } from "./ListBox";
 import AddIcon from "@mui/icons-material/Add";
 import { useEffect } from "react";
@@ -70,7 +70,10 @@ export default function ChatPeopleList({
               >
                 <Box
                   onClick={
-                    addUserHandle && ((e: any) => addUserHandle(e, item))
+                    addUserHandle &&
+                    ((e: any) => {
+                      searchMode && addUserHandle(e, item);
+                    })
                   }
                   sx={{}}
                 >
@@ -155,7 +158,7 @@ export default function ChatPeopleList({
                           <IconButton
                             onClick={
                               removeHandle &&
-                              (() => removeHandle((item as ListUser).mixedUID))
+                              (() => removeHandle(item as ListUser))
                             }
                             disableRipple
                             sx={{ alignSelf: "end" }}

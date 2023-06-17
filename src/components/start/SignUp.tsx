@@ -18,7 +18,7 @@ import { getStyles } from "../../styles/theme";
 import { registerWithEmailAndPassword } from "./firebaseSignUp";
 
 import ImageUpload from "./imageUpload";
-import { State } from "../../redux/userInterface";
+import { State } from "../../app/interfaces/interfaces";
 function Copyright(props: any) {
   return (
     <Typography

@@ -10,7 +10,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { FormEventHandler, useState } from "react";
-import { State } from "../../redux/userInterface";
+import { State } from "../../app/interfaces/interfaces";
 
 export default function ImageUpload({
   setUploadImageURL,

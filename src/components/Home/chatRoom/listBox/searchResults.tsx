@@ -1,9 +1,9 @@
 import ChatPeopleList from "./ChatPeopleList";
-import { User, db } from "../../../../app/firebase/config";
+import {  db } from "../../../../app/firebase/config";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
-import { State } from "../../../../redux/userInterface";
-
+import { State } from "../../../../app/interfaces/interfaces";
+import { User } from "../../../../app/interfaces/interfaces";
 interface Props {
   open: boolean;
   setOpen: Function;
@@ -21,15 +21,15 @@ const add_user_to_chats = async (
     const docRef = doc(db, "users", UID);
     const docSnapshot = await getDoc(docRef);
     const existingData = docSnapshot.data();
-    const date: Date = new Date();
     if (existingData) {
       await updateDoc(docRef, {
         chats: {
           ...existingData.chats,
           [otherUid]: {
+            uid: otherUid,
             name: otherName,
             photoURL: otherPhotoURL,
-            lastChat: { message: "", date: date.toLocaleDateString() },
+            lastChat: { message: "", date: new Date() },
             mixedUID: mixedUID,
           },
         },

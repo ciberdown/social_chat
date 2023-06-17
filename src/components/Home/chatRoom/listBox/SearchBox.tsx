@@ -3,7 +3,8 @@ import { ChangeEvent, ChangeEventHandler, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import SearchIcon from "@mui/icons-material/Search";
 import { collection, getDocs, query, startAt, where } from "firebase/firestore";
-import { User, UserInterface, auth, db } from "../../../../app/firebase/config";
+import { auth, db } from "../../../../app/firebase/config";
+import { User, UserInterface } from "../../../../app/interfaces/interfaces";
 import SearchResults from "./searchResults";
 
 export default function SearchBox({
@@ -22,7 +23,7 @@ export default function SearchBox({
   const searchUser = async (str: string) => {
     if (str !== "") {
       setProgressbar("indeterminate");
-      setOpenResults(false)
+      setOpenResults(false);
       setSearchBar([]);
       const q = query(
         collection(db, "users"),
@@ -49,7 +50,7 @@ export default function SearchBox({
         setProgressbar("determinate");
       }
     } else {
-      setOpenResults(false)
+      setOpenResults(false);
     }
   };
   const handleChange = (

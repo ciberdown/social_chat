@@ -4,12 +4,9 @@ import { auth } from "../../../../app/firebase/config";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { IconButton, Tooltip } from "@mui/material";
-import { User } from "../../../../app/firebase/config";
-import { State } from "../../../../redux/userInterface";
+import { State } from "../../../../app/interfaces/interfaces";
 export default function LogOut() {
-  const mode: string = useSelector(
-    (state: State) => state.Mode.mode
-  );
+  const mode: string = useSelector((state: State) => state.Mode.mode);
   const navigate = useNavigate();
   const logOutHandler = async () => {
     try {
