@@ -14,13 +14,10 @@ import {
   doc,
   onSnapshot,
 } from "firebase/firestore";
-import sort_chats_by_lastChat from "./listBox/sortChatList";
 
 export default function MainChatRoom() {
   const dispatch = useDispatch();
-  const CUser = useSelector(
-    (state: any) => state.CurrentUserInfo.currentUserInfo
-  );
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (auth.currentUser !== null) {
@@ -51,8 +48,8 @@ export default function MainChatRoom() {
   };
   return (
     <Grid container>
-      <ListBox sx={{ height: "90vh", bgcolor: "grey" }} md={4} xs={6} />
-      <ChatRoomBox sx={{ height: "90vh" }} md={8} xs={6} />
+      <ListBox sx={{ height: "50rem", bgcolor: "grey" }} md={4} xs={6} />
+      <ChatRoomBox sx={{ height: "50rem" }} md={8} xs={6} />
     </Grid>
   );
 }

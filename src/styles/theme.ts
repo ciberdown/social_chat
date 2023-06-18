@@ -4,6 +4,7 @@ import "@fontsource/open-sans/400.css"; // Specify weight
 import "@fontsource/open-sans/400-italic.css"; // Specify weight and style
 import { Theme } from "@mui/material";
 import { createTheme } from "@mui/material";
+import { Mode } from "../app/interfaces/interfaces";
 declare module "@mui/material/styles" {
   interface Theme {
     colors: {
@@ -32,7 +33,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-export const getTheme = (mode: "light" | "dark") => {
+export const getTheme = (mode: Mode) => {
   return createTheme({
     colors: {
       first: {
@@ -59,8 +60,29 @@ export const getTheme = (mode: "light" | "dark") => {
   });
 };
 
-export const getStyles = (mode: "light" | "dark") => {
+export const getStyles = (mode: Mode) => {
   return {
+    chatRoomBox: {
+      height: "93%",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      overflow: "scroll",
+      pl: "2rem",
+      pr: "2rem",
+    },
+    chatRoomItem: {
+      height: "50rem",
+      backgroundImage:
+        mode === "light"
+          ? "url('https://firebasestorage.googleapis.com/v0/b/social-chat-aff34.appspot.com/o/bgImages%2Fthomas-heintz-0tgMnMIYQ9Y-unsplash.jpg?alt=media&token=a30727a8-f923-4b97-ae81-73ab62eeda06')"
+          : "url('https://firebasestorage.googleapis.com/v0/b/social-chat-aff34.appspot.com/o/bgImages%2Fmath-U5mHl-uACe0-unsplash.jpg?alt=media&token=65b9ffd7-c1f4-4a42-9d09-60a89ced1b6c')",
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      p: 0,
+      m: 0,
+    },
     mylink: {
       color: `${mode}` === "dark" ? "white" : "black",
       textDecoration: "none",

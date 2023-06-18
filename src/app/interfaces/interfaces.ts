@@ -27,3 +27,4 @@ export interface State {
   Users: { users: [] };
   CurrentUserInfo: { currentUserInfo: User };
 }
+export type Mode = "light" | "dark";
